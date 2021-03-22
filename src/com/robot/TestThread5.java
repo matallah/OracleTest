@@ -10,7 +10,7 @@ public class TestThread5 {
         List<String> allKps = Arrays.asList("UG178","UG142");
         System.out.println(allKps);
         for (String allKp : allKps) {
-           new RunnableDemo( allKp).start();
+           new RunnableDemo( allKp,0).start();
         }
     }
 }
