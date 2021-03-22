@@ -45,6 +45,7 @@ public class RunnableDemo implements Runnable {
             con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.11.12:1521:jupiter", "jupiter", "jupiter");
             try {
                 Statement stmt = con.createStatement();
+                String tabel = "LINKS"+kpIndex;
                 String sql =
                         "WITH T1(ITEMID, PARENTID, LVL, ROOT_ID, PATH, LABEL, FULL_PATH, PARENT_TYPE) AS (\n" +
                                 "    -- ANCHOR MEMBER.\n" +
@@ -56,11 +57,11 @@ public class RunnableDemo implements Runnable {
                                 "           KNOWLEDGEPOOL.NAME AS LABEL,\n" +
                                 "           KNOWLEDGEPOOL.NAME AS FULL_PATH,\n" +
                                 "           '1'                AS PARENT_TYPE\n" +
-                                "    FROM LINKS\n" +
+                                "    FROM "+tabel+"\n" +
                                 "             LEFT JOIN\n" +
                                 "         KNOWLEDGEPOOL\n" +
                                 "         ON\n" +
-                                "             KNOWLEDGEPOOL.POOLID = LINKS.ITEMID\n" +
+                                "             KNOWLEDGEPOOL.POOLID = "+tabel+".ITEMID\n" +
                                 "    WHERE PARENTID IS NULL\n" +
                                 "      AND ITEMID = '"+kpId+"'\n" +
                                 "    UNION ALL\n" +
@@ -73,7 +74,7 @@ public class RunnableDemo implements Runnable {
                                 "           (SELECT LABEL FROM ITEMS WHERE ITEMS.ITEMID = T2.ITEMID)                               AS LABEL,\n" +
                                 "           T1.FULL_PATH || '~' || (SELECT LABEL FROM ITEMS WHERE ITEMS.ITEMID = T2.ITEMID)        AS FULL_PATH,\n" +
                                 "           T1.PARENT_TYPE || '~' || (SELECT ITEMS.TYPE FROM ITEMS WHERE ITEMS.ITEMID = T2.ITEMID) AS PARENT_TYPE\n" +
-                                "    FROM LINKS T2,\n" +
+                                "    FROM "+tabel+" T2,\n" +
                                 "         T1\n" +
                                 "    WHERE T2.PARENTID = T1.ITEMID\n" +
                                 ")\n" +
