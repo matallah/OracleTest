@@ -6,17 +6,19 @@ public class RunnableDemo implements Runnable {
     
     private Thread t;
     private String kpId;
+    private int kpIndex;
     static Connection con;
 
-    RunnableDemo(String kpId) {
+    RunnableDemo(String kpId,int kpIndex) {
         this.kpId = kpId;
+        this.kpIndex = kpIndex;
         System.out.println("Creating KP thread"+ kpId);
     }
 
     public void run() {
         try {
             System.out.println("Running " + kpId);
-            startFillData(kpId);
+            startFillData(kpId,kpIndex);
                 // Let the thread sleep for a while.
                 Thread.sleep(50);
 
@@ -34,7 +36,7 @@ public class RunnableDemo implements Runnable {
         }
     }
 
-   static void startFillData(String kpId){
+   static void startFillData(String kpId,int kpIndex){
         long currTime = System.currentTimeMillis();
         int count = 0;
 
@@ -88,7 +90,7 @@ public class RunnableDemo implements Runnable {
                                 "FROM T1\n" +
                                 "ORDER BY ORDER1";
                 ResultSet result = stmt.executeQuery(sql);
-                String SQL_INSERT = "INSERT INTO itemspaths (itemid,directparentid,directparenttype,itemfullpath,parentlabel,ITEMFULLPATHIDS,ROOTPARENT,fullParentType) VALUES (?,?,?,?,?,?,?,?)";
+                String SQL_INSERT = "INSERT INTO itemspaths"+kpIndex+" (itemid,directparentid,directparenttype,itemfullpath,parentlabel,ITEMFULLPATHIDS,ROOTPARENT,fullParentType) VALUES (?,?,?,?,?,?,?,?)";
                 PreparedStatement preparedStatement = con.prepareStatement(SQL_INSERT);
                 while (result.next()) {
                     if (result.getObject("PARENTID") == null) continue;

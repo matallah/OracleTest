@@ -7,31 +7,32 @@ public class TestThread3 {
     public static void main(String args[]) {
        Mainkp main = new Mainkp();
 //        List<String> allKps = main.findAllKps();
-        List<String> allKps = Arrays.asList("UG86",
-                "UG88",
-                "UG90",
-                "UG93",
-                "UG97",
+        List<String> allKps = Arrays.asList("UG136",
+                "UG137",
                 "UG141",
-                "UG100",
-                "UG101",
-                "UG102",
-                "UG103",
-                "UG105",
-                "UG109",
-                "UG111",
-                "UG113",
-                "UG114",
-                "UG115",
-                "UG116",
-                "UG122",
-                "UG127",
-                "UG129",
-                "UG133",
-                "UG131");
+                "UG142",
+                "UG143",
+                "UG144",
+                "UG145",
+                "UG146",
+                "UG147",
+                "UG149",
+                "UG150",
+                "UG151",
+                "UG152",
+                "UG153",
+                "UG154",
+                "UG155",
+                "UG156",
+                "UG157",
+                "UG158",
+                "UG160",
+                "UG161",
+                "UG162",
+                "UG163");
         System.out.println(allKps);
         for (String allKp : allKps) {
-           new RunnableDemo( allKp).start();
+           new RunnableDemo( allKp,3).start();
         }
     }
 }

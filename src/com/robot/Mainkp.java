@@ -1,8 +1,7 @@
 package com.robot;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Mainkp {
     static Connection con;
@@ -38,4 +37,18 @@ public class Mainkp {
         return kps;
     }
 
+    public static void main(String[] args) {
+        List<String> allKps = findAllKps();
+        List<Integer> allKpsNew = new ArrayList<>();
+        Iterator<String> iterator = allKps.iterator();
+        while (iterator.hasNext()){
+            String next = iterator.next();
+            String ug = next.replace("UG", "");
+            allKpsNew.add(Integer.parseInt(ug));
+        }
+        Collections.sort(allKpsNew);
+        for (Integer allKp : allKpsNew) {
+            System.out.println("UG"+allKp);
+        }
+    }
 }
