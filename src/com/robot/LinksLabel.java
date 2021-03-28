@@ -17,11 +17,11 @@ public class LinksLabel {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
 //            con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.10.96:1521:jupiter", "jdcci", "jdcci");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "jupiter", "jupiter");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:assetiso", "JDCCI", "JDCCI");
             try {
                 Statement stmt = con.createStatement();
                 String sql =
-                        "SELECT * FROM LINKSLABELVIEW";
+                        "SELECT * FROM LINKSLABEL";
                 ResultSet result = stmt.executeQuery(sql);
                 while (result.next()) {
                     String itemid = result.getString("ITEMID");
