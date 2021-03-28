@@ -3,7 +3,7 @@ package com.robot;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestThread5 {
+public class AllTestThread5 {
     public static void main(String args[]) {
        Mainkp main = new Mainkp();
 //        List<String> allKps = main.findAllKps();
