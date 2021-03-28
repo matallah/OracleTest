@@ -17,8 +17,9 @@ public class LinksLabel {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            //            con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.10.96:1521:jupiter", "jdcci", "jdcci");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:assetiso", "JDCCI", "JDCCI");
+//            con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.10.96:1521:jupiter", "jdcci", "jdcci");
+//            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:assetiso", "JDCCI", "JDCCI");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "jupiter", "jupiter");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -45,10 +46,10 @@ public class LinksLabel {
                             result.getString("LABEL"))
                     ));
                 }
-                con.close();
                 long currentTimeNow = System.currentTimeMillis();
                 double elapsedTimeNow = (currentTimeNow - currTime) / 1000.0;
                 System.out.println("Retrieved Time ***************** :" + elapsedTimeNow);
+                con.close();
                 openConnection();
                 Collection<LinksLabels> values = linksLabelsHashMap.values();
                 for (LinksLabels value : values) {
@@ -60,11 +61,11 @@ public class LinksLabel {
                         LinksLabels parent = linksLabelsHashMap.get(value.getParentid());
                         itemsPathsPojo.setParentlabel(parent.getLabel());//Parent label
                     }
-                    StringBuilder itemFullPathBuilder = new StringBuilder(value.getLabel());
-                    StringBuilder itemfullpathidsBuilder = new StringBuilder(value.getItemid());
-                    StringBuilder iullparenttypeBuilder = new StringBuilder(value.getParenttype());
+                    StringBuilder itemFullPathBuilder = new StringBuilder(value.getLabel() + "~");
+                    StringBuilder itemfullpathidsBuilder = new StringBuilder(value.getItemid() + "~");
+                    StringBuilder iullparenttypeBuilder = new StringBuilder(value.getParenttype() + "~");
                     String rootParent = "";
-                    recursionFullParent(itemFullPathBuilder, itemfullpathidsBuilder, iullparenttypeBuilder, rootParent, value.getParentid(), linksLabelsHashMap);
+                    recursionFullParent(itemFullPathBuilder, itemfullpathidsBuilder, iullparenttypeBuilder, rootParent, linksLabelsHashMap, value, value.getParentid());
                     itemsPathsPojo.setItemfullpath(itemFullPathBuilder.toString());//full path labels
                     itemsPathsPojo.setItemfullpathids(itemfullpathidsBuilder.toString());//full path ids
                     itemsPathsPojo.setFullparenttype(iullparenttypeBuilder.toString());//full path ids
@@ -79,7 +80,8 @@ public class LinksLabel {
                     preparedStatement.setString(6, itemsPathsPojo.getItemfullpathids());
                     preparedStatement.setString(7, itemsPathsPojo.getRootparent());
                     preparedStatement.setString(8, itemsPathsPojo.getFullparenttype());
-                    preparedStatement.executeUpdate();
+                    int i = preparedStatement.executeUpdate();
+                    System.out.println(i);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -95,15 +97,22 @@ public class LinksLabel {
         System.out.println("All Time ***************** :" + elapsedTime);
     }
 
-    private static void recursionFullParent(StringBuilder itemFullPathBuilder, StringBuilder itemfullpathidsBuilder, StringBuilder iullparenttypeBuilder, String rootParent, String parentid, HashMap<String, LinksLabels> linksLabelsHashMap) {
+    private static void recursionFullParent(StringBuilder itemFullPathBuilder, StringBuilder itemfullpathidsBuilder, StringBuilder iullparenttypeBuilder, String rootParent, HashMap<String, LinksLabels> linksLabelsHashMap, LinksLabels linksLabels, String parentid) {
         if (linksLabelsHashMap.containsKey(parentid)) {
             LinksLabels parent = linksLabelsHashMap.get(parentid);
-            itemFullPathBuilder.append(parent.getLabel()).append("~");
-            itemfullpathidsBuilder.append(parent.getParentid()).append("~");
-            iullparenttypeBuilder.append(parent.getItemid()).append("~");
             rootParent = parent.getParentid();
             parentid = parent.getParentid();
-            recursionFullParent(itemFullPathBuilder, itemfullpathidsBuilder, iullparenttypeBuilder, rootParent, parentid, linksLabelsHashMap);
+            if (parentid != null) {
+                itemFullPathBuilder.append(parent.getLabel()).append("~");
+                itemfullpathidsBuilder.append(parent.getParentid()).append("~");
+                iullparenttypeBuilder.append(parent.getParenttype()).append("~");
+                recursionFullParent(itemFullPathBuilder, itemfullpathidsBuilder, iullparenttypeBuilder, rootParent, linksLabelsHashMap, linksLabels, parentid);
+            } else {
+                itemFullPathBuilder.append(parent.getLabel());
+                itemfullpathidsBuilder.append(linksLabels.getParentid());
+                iullparenttypeBuilder.append("0");
+                rootParent = linksLabels.getParentid();
+            }
         }
     }
 }
