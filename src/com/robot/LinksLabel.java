@@ -10,14 +10,26 @@ import java.util.HashMap;
 public class LinksLabel {
     static Connection con;
 
+    private static void openConnection() {
+        try {
+            try {
+                Class.forName("oracle.jdbc.driver.OracleDriver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            //            con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.10.96:1521:jupiter", "jdcci", "jdcci");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:assetiso", "JDCCI", "JDCCI");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static void main(String args[]) {
         long currTime = System.currentTimeMillis();
         int count = 0;
         HashMap<String, LinksLabels> linksLabelsHashMap = new HashMap<>();
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-//            con = DriverManager.getConnection("jdbc:oracle:thin:@10.0.10.96:1521:jupiter", "jdcci", "jdcci");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:assetiso", "JDCCI", "JDCCI");
+            openConnection();
             try {
                 Statement stmt = con.createStatement();
                 String sql =
@@ -34,7 +46,7 @@ public class LinksLabel {
                     ));
                 }
                 con.close();
-                con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "jupiter", "jupiter");
+                openConnection();
                 Collection<LinksLabels> values = linksLabelsHashMap.values();
                 for (LinksLabels value : values) {
                     Itemspaths itemsPathsPojo = new Itemspaths();
