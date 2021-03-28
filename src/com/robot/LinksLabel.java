@@ -46,6 +46,9 @@ public class LinksLabel {
                     ));
                 }
                 con.close();
+                long currentTimeNow = System.currentTimeMillis();
+                double elapsedTimeNow = (currentTimeNow - currTime) / 1000.0;
+                System.out.println("Retrieved Time ***************** :" + elapsedTimeNow);
                 openConnection();
                 Collection<LinksLabels> values = linksLabelsHashMap.values();
                 for (LinksLabels value : values) {
@@ -89,7 +92,7 @@ public class LinksLabel {
         System.out.println("Count " + count);
         long currentTime = System.currentTimeMillis();
         double elapsedTime = (currentTime - currTime) / 1000.0;
-        System.out.println("Time Native ***************** :" + elapsedTime);
+        System.out.println("All Time ***************** :" + elapsedTime);
     }
 
     private static void recursionFullParent(StringBuilder itemFullPathBuilder, StringBuilder itemfullpathidsBuilder, StringBuilder iullparenttypeBuilder, String rootParent, String parentid, HashMap<String, LinksLabels> linksLabelsHashMap) {
