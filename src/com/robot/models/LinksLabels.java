@@ -5,25 +5,23 @@ public class LinksLabels {
     private static final long serialVersionUID = 1L;
     private String itemid;
     private String parentid;
-    private Long pos;
-    private Short parenttype;
+    private int pos;
+    private int parenttype;
     private String indexclass;
     private String label;
+    private int type;
 
     public LinksLabels() {
     }
 
-    public LinksLabels(String itemid, String parentid, Long pos, Short parenttype, String indexclass, String label) {
+    public LinksLabels(String itemid, String parentid, int pos, int parenttype, String indexclass, String label, int type) {
         this.itemid = itemid;
         this.parentid = parentid;
         this.pos = pos;
         this.parenttype = parenttype;
         this.indexclass = indexclass;
         this.label = label;
-    }
-
-    public LinksLabels(String itemid) {
-        this.itemid = itemid;
+        this.type = type;
     }
 
     public String getItemid() {
@@ -42,19 +40,19 @@ public class LinksLabels {
         this.parentid = parentid;
     }
 
-    public Long getPos() {
+    public int getPos() {
         return pos;
     }
 
-    public void setPos(Long pos) {
+    public void setPos(int pos) {
         this.pos = pos;
     }
 
-    public Short getParenttype() {
+    public int getParenttype() {
         return parenttype;
     }
 
-    public void setParenttype(Short parenttype) {
+    public void setParenttype(int parenttype) {
         this.parenttype = parenttype;
     }
 
@@ -72,6 +70,14 @@ public class LinksLabels {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
